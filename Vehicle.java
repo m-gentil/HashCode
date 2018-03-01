@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Vehicle {
 	int currRow, currCol;
 	Ride ride;
@@ -10,9 +12,9 @@ public class Vehicle {
 		hasPassenger = false;
 	}
 
-	public void update(int t) {
+	public void update(int t, ArrayList<Ride> rides) {
 		if (ride == null) {
-			pickNewRide();
+			pickNewRide(rides);
 		} else if (hasPassenger) {
 			int destRow = ride.getEndRow();
 
@@ -32,7 +34,7 @@ public class Vehicle {
 				if (currCol == destCol) {
 					hasPassenger = false;
 					// Scrivi su file
-					pickNewRide();
+					pickNewRide(rides);
 				}
 			}
 		} else {
@@ -59,7 +61,25 @@ public class Vehicle {
 		}
 	}
 
-	public void pickNewRide() {
-
+	public void pickNewRide(ArrayList<Ride> r) {
+		if(r.size() <= 0) {
+			return;
+		}
+		
+		int bestTimeArrival = Integer.MAX_VALUE;
+		int bestIndex = 0;
+		for(int i = 0; i < r.size(); i++) {
+			Ride curr = r.get(i);
+			if(curr.getEarly() + Math.abs(curr.getStartRow() - currRow) + Math.abs(curr.getStartCol() - currCol) < bestTimeArrival) {
+				bestTimeArrival = curr.getEarly() + Math.abs(curr.getStartRow() - currRow) + Math.abs(curr.getStartCol() - currCol);
+				bestIndex = i;	
+			}
+		}
+		
+		ride = r.remove(bestIndex);
+	}
+	
+	public String toString() {
+		return currRow + " " + currCol;
 	}
 }

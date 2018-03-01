@@ -1,13 +1,21 @@
-public class Ride {
-	int startRow, startCol, endRow, endCol, early, late;
+public class Ride implements Comparable<Ride>{
+	int id, startRow, startCol, endRow, endCol, early, late;
 	
-	public Ride(int sR, int sC, int eR, int eC, int e, int l) {
+	public Ride(int i, int sR, int sC, int eR, int eC, int e, int l) {
+		id = i;
 		startRow = sR;
 		startCol = sC;
 		endRow = eR;
 		endCol = eC;
 		early = e;
 		late = l;
+	}
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public int getStartRow() {
@@ -57,6 +65,12 @@ public class Ride {
 	public void setLate(int late) {
 		this.late = late;
 	}
+
+	public int compareTo(Ride o) {
+		return - o.getEarly() + this.getEarly();
+	}
 	
-	
+	public String toString() {
+		return id + " " + startRow + " " + startCol + " " + endRow + " " + endCol + " " + early + " " + late;
+	}
 }
